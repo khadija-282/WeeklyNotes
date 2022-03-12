@@ -1,0 +1,71 @@
+<div class="overlay" *ngIf="isBusy">
+    <div class="loader-holder">
+        <div class="loader-block">
+            <p-progressSpinner [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8"
+                fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+        </div>
+    </div>
+</div>
+
+<mat-card [ngClass]="{'light' : !isDarkMode }">
+    <mat-card-title>
+        <section>
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <select class="form-control" (change)='typeChange()' [(ngModel)]="type">
+                        <option value="0" selected="true">All </option>
+                        <option *ngFor="let l of notesService.allLabels  " [value]="l.id">{{l.text}}</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2">
+                            <button mat-mini-fab color="accent" (click)="updateWeek('subtract')">
+                                <i class="bi bi-caret-left"></i>
+                            </button>
+                        </div>
+                        <h3 class="heading col-lg-4 col-md-4">Calendar Week : {{weekNumber}}</h3>
+                        <div class="col-lg-2 col-md-2">
+                            <button mat-mini-fab color="accent" (click)="updateWeek('add')">
+                                <i class="bi bi-caret-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <button mat-mini-fab color="accent" (click)="darkModeChange()" pTooltip="UI Mode"
+                        tooltipPosition="top">
+                        <i class="bi bi-clipboard" *ngIf="!isDarkMode"></i>
+                        <i class="bi bi-clipboard-fill" *ngIf="isDarkMode"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </mat-card-title>
+    <br />
+    <mat-card-content>
+
+        <section>
+            <table class="mat-elevation-z8">
+                <thead>
+                    <tr>
+                        <td [ngClass]="{'lightTable' : !isDarkMode }"></td>
+                        <td [ngClass]="{'lightTable' : !isDarkMode }" style="text-align: center;"
+                            *ngFor="let day of weekDates">
+                            {{day | date :'EEEE, MMMM d, y'}}
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let l of labels ">
+                        <td [ngClass]="{'lightTable' : !isDarkMode }">{{l.text}}</td>
+                        <td [ngClass]="{'lightTable' : !isDarkMode }" style="width:300px" *ngFor="let day of weekDates">
+                            <app-notes [labelType]="l.id" [date]="day" (isBusy)="setBusy($event)"></app-notes>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </mat-card-content>
+</mat-card>

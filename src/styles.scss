@@ -1,1 +1,160 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@include mat.core();
+html, body { height: 100%; }
+body {  font-family: Roboto, "Helvetica Neue", sans-serif; }
+.example-button-row {
+    display: flex;
+    width: 490px;
+  }
+  .heading{
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  table {
+    width: 100%;
+}
+
+tr,td{
+  padding: 15px;
+  margin: 15px;
+  border-top: solid 1px whitesmoke;
+  border-bottom: solid 1px whitesmoke;
+  border-left: solid 1px whitesmoke;
+  border-right: solid 1px whitesmoke;
+}
+
+// Define a light theme
+$light-primary: mat.define-palette(mat.$indigo-palette);
+$light-accent: mat.define-palette(mat.$pink-palette);
+$light-theme: mat.define-light-theme((
+ color: (
+   primary: $light-primary,
+   accent: $light-accent,
+ )
+));
+
+// Define a dark theme
+$dark-primary: mat.define-palette(mat.$pink-palette);
+$dark-accent: mat.define-palette(mat.$blue-gray-palette);
+$dark-theme: mat.define-dark-theme((
+ color: (
+   primary: $dark-primary,
+   accent: $dark-accent,
+ )
+));
+
+// Apply the dark theme by default
+@include mat.core-theme($dark-theme);
+@include mat.button-theme($dark-theme);
+
+// Apply the light theme only when the `.my-light-theme` CSS class is applied
+// to an ancestor element of the components (such as `body`).
+.my-light-theme {
+ @include mat.core-color($light-theme);
+ @include mat.button-color($light-theme);
+}
+.p-carousel-container{
+  display:grid !important;
+}
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(250, 250, 250, 0.8);
+  z-index: 2147483647;
+}
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(250, 250, 250, 0.8);
+  z-index: 2147483647;
+}
+
+.overlay .loader-holder {
+  display: table;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.overlay .loader-holder .loader-block {
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle;
+  text-align: center;
+}
+:host ::ng-deep .custom-spinner .p-progress-spinner-circle {
+    animation: custom-progress-spinner-dash 1.5s ease-in-out infinite, custom-progress-spinner-color 6s ease-in-out infinite;
+}
+
+@keyframes custom-progress-spinner-color {
+    100%,
+    0% {
+        stroke: #16697A;
+    }
+    40% {
+        stroke: #489FB5;
+    }
+    66% {
+        stroke: #82C0CC;
+    }
+    80%,
+    90% {
+        stroke: #FFA62B;
+    }
+}
+
+@keyframes custom-progress-spinner-dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+    
+}
+.light{
+  background:white;
+  color:black;
+}
+ .lightTable{
+  border-top: solid 1px black;
+  border-bottom: solid 1px black;
+  border-left: solid 1px black;
+  border-right: solid 1px black;
+ } 
+ .p-carousel-items-container {
+  display: inline-flex !important;
+}
+.p-card .p-card-content{
+  padding: 0 !important;
+}
+.p-card-body{
+  background-color: #dcdcdc !important;
+}
+p-Tag{
+  margin: 5px;
+}
+.p-button{
+  padding: 0.25rem 0.75rem;
+  margin: 5px;
+}

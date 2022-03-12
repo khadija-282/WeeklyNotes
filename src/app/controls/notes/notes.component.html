@@ -1,0 +1,102 @@
+<p-card *ngIf="filteredNotes.length>0" [style]="{'width': '20vw' }" #cardNote>
+    <p-carousel [value]="filteredNotes" [style]="{'max-width':'50vw'}" [numVisible]="1" [numScroll]="3"
+        [circular]="false">
+
+        <ng-template let-note let-i="index" pTemplate="item">
+            {{i}}
+            <div class="product-item">
+                <div class="product-item-content">
+                    <div class="mb-3">
+                        <h1>{{note.id}} {{note.title}} </h1>
+                        <hr />
+                        <p-tag *ngFor="let t of note.labels" [value]="getLabel(t)?.text"
+                            [severity]="getLabel(t)?.severity"></p-tag> &nbsp;&nbsp;&nbsp;
+
+                    </div>
+                    <div>
+                        <p pTooltip="{{note.summary}}" tooltipPosition="left"> {{note.summary}}</p>
+                        <h4 class="mb-1">Start Date: {{note.startDate | date :'EEEE, MMMM d, y'}}</h4>
+                        <h4 class="mb-1">Duration: {{note.duration}}</h4>
+                        <div class="car-buttons mt-5">
+                            <button pButton pRipple type="button" class="p-button-rounded p-button-primary"
+                                (click)="edit(note)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button pButton pRipple type="button" class="p-button-rounded p-button-danger"
+                                (click)="delete(note)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <button pButton pRipple type="button" class="p-button-rounded p-button-warning"
+                                (click)="downloadAsPDF()">
+                                <i class="bi bi-file-earmark-arrow-down-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ng-template>
+    </p-carousel>
+</p-card>
+
+<p-dialog header="Notes Edit Popup" [(visible)]="display" [style]="{'width': '45vw'  }">
+    <form [formGroup]="notesForm" (ngSubmit)="submit()">
+        <div class="modal-body">
+            <div class="form-group" style="display: none;">
+                <input formControlName="id" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="title">Title <span>*</span></label>
+                <input formControlName="title" type="text" class="form-control">
+                <div *ngIf="f.title.touched && f.title.invalid" class="alert alert-danger">
+                    <div *ngIf="f.title.errors.required">Title is required</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Start Date <span>*</span></label>
+                <div class="form-group">
+                    <p-calendar formControlName="startDate" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+                </div>
+                <div *ngIf="f.startDate.touched && f.startDate.invalid" class="alert alert-danger">
+                    <div *ngIf="f.startDate.errors.required">Start is required</div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date <span>*</span></label>
+                <div class="form-group">
+                    <p-calendar formControlName="endDate" dateFormat="dd-mm-yy" inputId="dateformat"></p-calendar>
+                </div>
+                <div *ngIf="f.endDate.touched && f.endDate.invalid" class="alert alert-danger">
+                    <div *ngIf="f.endDate.errors.required">End Date is required</div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="endDate">Label <span>*</span></label>
+                <div class="form-group">
+                    <p-listbox [options]="noteService.allLabels" formControlName="labels" [checkbox]="true"
+                        [multiple]="true" optionLabel="text" optionValue="id"></p-listbox>
+                </div>
+                <div *ngIf="f.labels.touched && f.labels.invalid" class="alert alert-danger">
+                    <div *ngIf="f.labels.errors.required">End Date is required</div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="summary">Summary <span>*</span></label>
+                <textarea formControlName="summary" type="text" class="form-control" rows="3"></textarea>
+                <div *ngIf="f.summary.touched && f.summary.invalid" class="alert alert-danger">
+                    <div *ngIf="f.summary.errors.required">Title is required</div>
+                    <div *ngIf="f.summary.errors.maxlength">
+                        Max length of {{f.summary?.errors?.maxlength?.requiredLength}} characters exceeded.</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" [disabled]="notesForm.invalid" type="submit">Save</button>
+            <button class="btn btn-default" type="button" (click)="this.display=false;">Cancel</button>
+        </div>
+    </form>
+</p-dialog>
